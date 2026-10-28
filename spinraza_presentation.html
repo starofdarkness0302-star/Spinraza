@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스핀라자 · 유전자 스플라이싱 교정</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+<style>
+:root{--bg:#0b1220;--panel:#111a2e;--line:#22304d;--txt:#e6ecf5;--sub:#93a3bd;--teal:#2dd4bf;--amber:#fbbf24;--red:#f43f5e;--blue:#60a5fa;--violet:#a78bfa}
+*{box-sizing:border-box;margin:0;padding:0}html,body{width:100%;height:100%;background:#05080f;overflow:hidden;font-family:Pretendard,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:var(--txt)}
+#stage{width:1920px;height:1080px;position:absolute;left:50%;top:50%;transform-origin:center;background:radial-gradient(1200px 700px at 80% 10%,#13213d 0%,var(--bg) 60%)}
+.slide{position:absolute;inset:0;padding:66px 86px;display:none;flex-direction:column}.slide.active{display:flex;animation:fade .35s ease}@keyframes fade{from{opacity:.25;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.eyebrow{font-size:22px;letter-spacing:.16em;color:var(--teal);font-weight:700}h1{font-size:57px;font-weight:800;line-height:1.2;margin:10px 0 8px}h1 em{font-style:normal;background:linear-gradient(90deg,var(--teal),var(--blue));-webkit-background-clip:text;color:transparent}.lead{font-size:24px;color:var(--sub)}
+.body{flex:1;display:flex;gap:34px;margin-top:30px;min-height:0}.col{display:flex;flex-direction:column;gap:18px;min-width:0}.card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.015));border:1px solid var(--line);border-radius:20px;padding:23px 26px}.card h3{font-size:26px;margin-bottom:12px;display:flex;align-items:center;gap:13px}.num{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:20px;font-weight:800;background:rgba(45,212,191,.15);color:var(--teal);border:1px solid rgba(45,212,191,.4);flex:none}.card p,.card li{font-size:21px;line-height:1.55;color:#cdd6e4}.card ul{list-style:none;display:flex;flex-direction:column;gap:9px}.card li{padding-left:20px;position:relative}.card li:before{content:"";position:absolute;left:2px;top:13px;width:7px;height:7px;border-radius:50%;background:var(--teal)}
+b{color:#fff}.a{color:var(--amber);font-weight:700}.r{color:var(--red);font-weight:700}.t{color:var(--teal);font-weight:700}.bl{color:var(--blue);font-weight:700}.eq{font-family:Consolas,monospace;font-size:22px;background:#0a1324;border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:12px;color:#dbe7ff;text-align:center}.tag{font-size:16px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);color:var(--sub);margin-left:auto;font-weight:500;white-space:nowrap}
+.visual{flex:1;border-radius:24px;border:1px solid var(--line);background:radial-gradient(circle at 50% 45%,#16274a,#0a1120 72%);padding:28px;display:flex;flex-direction:column;justify-content:center;gap:20px;min-width:0}.flow{display:flex;align-items:center;justify-content:center;gap:15px}.node{border:1px solid var(--line);background:#101b30;border-radius:18px;padding:20px 17px;text-align:center;min-width:175px}.node .big{font-size:27px;font-weight:800;margin-bottom:8px}.node small{font-size:17px;line-height:1.4;color:var(--sub)}.arrow{font-size:36px;color:var(--teal)}.caption{font-size:17px;color:var(--sub);text-align:center;line-height:1.5}.pill{display:inline-block;border-radius:999px;padding:7px 13px;font-size:16px;font-weight:700}.simwrap{flex:1;display:flex;flex-direction:column;gap:18px;min-width:0}.simcanvas{width:100%;height:570px;border-radius:24px;border:1px solid var(--line);background:#0a1120}.controls{display:flex;align-items:center;gap:20px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px 24px}.controls label{font-size:20px;font-weight:700}.controls input{accent-color:var(--violet);width:260px}.controls button,button{font-family:inherit;font-size:18px;padding:12px 20px;border-radius:12px;border:1px solid var(--line);background:#1a2540;color:var(--txt);cursor:pointer}.controls button.primary{background:#4c1d95;border-color:#8b5cf6}.controls button:hover,button:hover{background:#24335a}.status{font-size:19px;color:var(--sub);flex:1}.meters{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}.meter{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px 18px}.meter .k{font-size:16px;color:var(--sub)}.meter .v{font-size:25px;font-weight:800;margin-top:5px}.bar{height:8px;border-radius:4px;background:#1f2a44;margin-top:10px;overflow:hidden}.bar div{height:100%;width:0;transition:width .3s}.step{display:flex;align-items:center;gap:15px;padding:15px 18px;border-radius:14px;background:#0a1324;border:1px solid var(--line);font-size:20px}.step strong{color:var(--teal);min-width:155px}.foot{position:absolute;bottom:25px;left:86px;font-size:15px;color:#55657f}.nav{position:absolute;bottom:20px;right:35px;display:flex;align-items:center;gap:14px;font-size:18px;color:var(--sub);z-index:5}
+@media(max-width:700px){.slide{padding:55px 60px}.card p,.card li{font-size:20px}}
+</style></head><body><div id="stage">
+<section class="slide active">
+ <div class="eyebrow">PART 1 · RNA 스플라이싱을 교정하는 ASO</div>
+ <h1>스핀라자: <em>유전자 발현의 오류를 바로잡는 치료제</em></h1>
+ <div class="lead">Spinraza (Nusinersen) · 안티센스 올리고뉴클레오타이드(ASO) · 척수성 근위축증(SMA) 치료</div>
+ <div class="body">
+  <div class="col" style="flex:1.02">
+   <div class="card"><h3><span class="num">1</span>스핀라자란?</h3><ul><li>운동신경세포 기능에 필요한 <b>SMN 단백질</b>의 생성을 늘리도록 돕는 치료제</li><li>짧은 단일 가닥 핵산인 <span class="a">안티센스 올리고뉴클레오타이드(ASO)</span>로 구성</li><li>표적 RNA 서열에 상보적으로 결합해 유전자 발현 과정 중 <b>스플라이싱</b>을 조절</li></ul></div>
+   <div class="card"><h3><span class="num">2</span>왜 SMN2를 조절할까?</h3><ul><li>SMA에서는 <span class="r">SMN1 유전자 기능의 손상</span>으로 SMN 단백질이 부족해짐</li><li>SMN2 유전자도 단백질을 만들 수 있지만, RNA 가공 과정에서 <b>엑손 7이 자주 제외</b>됨</li><li>스핀라자는 SMN2 pre-mRNA의 스플라이싱을 교정해 엑손 7이 포함될 가능성을 높임</li></ul></div>
+  </div>
+  <div class="visual" style="flex:.98">
+   <div class="caption" style="font-size:19px;color:#dbe7ff">치료의 핵심 흐름</div>
+   <div class="flow"><div class="node"><div class="big" style="color:var(--blue)">SMN2</div><small>pre-mRNA<br>엑손 7 제외 가능성</small></div><div class="arrow">→</div><div class="node" style="border-color:#7c3aed"><div class="big" style="color:var(--violet)">ASO</div><small>스핀라자<br>표적 RNA에 결합</small></div></div>
+   <div style="text-align:center;font-size:32px;color:var(--teal)">↓ 스플라이싱 교정 ↓</div>
+   <div class="flow"><div class="node" style="border-color:#0f766e"><div class="big" style="color:var(--teal)">엑손 7 유지</div><small>완성형 SMN2 mRNA 증가</small></div><div class="arrow">→</div><div class="node"><div class="big" style="color:var(--amber)">SMN 단백질</div><small>기능성 단백질 생성 증가</small></div></div>
+   <div class="caption">※ 개념도이며, 실제 세포 내 분자 구조와 반응을 단순화해 표현함</div>
+  </div>
+ </div>
+</section>
+<section class="slide">
+ <div class="eyebrow">PART 2 · 인터랙티브 시뮬레이션</div>
+ <h1>스플라이싱 교정 <em>분자 시뮬레이터</em></h1>
+ <div class="lead">버튼을 눌러 투여 전후의 RNA 가공 과정을 비교해 보세요.</div>
+ <div class="body">
+  <div class="simwrap" style="flex:1.35">
+   <canvas id="sim" class="simcanvas" width="1120" height="570"></canvas>
+   <div class="controls"><button id="treat" class="primary">▶ 스핀라자 작용 보기</button><button id="reset">↺ 초기화</button><div class="status" id="simStatus">현재 상태: 투여 전 — 엑손 7이 제외된 mRNA가 만들어질 수 있음</div></div>
+   <div class="meters"><div class="meter"><div class="k">ASO 결합</div><div class="v" id="bindV">대기</div><div class="bar"><div id="bindBar" style="background:var(--violet)"></div></div></div><div class="meter"><div class="k">엑손 7 포함</div><div class="v" id="exonV">낮은 비율</div><div class="bar"><div id="exonBar" style="background:var(--teal)"></div></div></div><div class="meter"><div class="k">SMN 단백질 생성</div><div class="v" id="proteinV">제한적</div><div class="bar"><div id="proteinBar" style="background:var(--amber)"></div></div></div></div>
+  </div>
+  <div class="col" style="flex:.8">
+   <div class="card"><h3><span class="num">1</span>투여 전</h3><ul><li>스플라이싱 억제 인자가 ISS-N1 부위에 작용</li><li>엑손 7이 최종 mRNA에서 빠질 수 있음</li><li>기능성 SMN 단백질 생성이 제한됨</li></ul></div>
+   <div class="card"><h3><span class="num">2</span>ASO 결합</h3><ul><li>스핀라자가 <b>ISS-N1 표적 서열</b>에 상보적으로 결합</li><li>억제 인자가 해당 부위에 접근하는 것을 방해</li></ul></div>
+   <div class="card"><h3><span class="num">3</span>교정 결과</h3><ul><li>엑손 7이 포함된 완성형 SMN2 mRNA 증가</li><li>기능성 SMN 단백질 생성 증가에 도움</li></ul></div>
+   <div class="caption" style="text-align:left">시뮬레이션은 원리를 설명하기 위한 개념 모델이며, 실제 치료 효과나 환자별 결과를 예측하지 않음.</div>
+  </div>
+ </div>
+</section>
+<section class="slide">
+ <div class="eyebrow">PART 3 · 핵심 원리 정리</div>
+ <h1>스핀라자의 핵심은 <em>DNA가 아니라 RNA 가공 조절</em></h1>
+ <div class="lead">유전자의 염기서열을 직접 바꾸는 방식이 아니라, pre-mRNA가 성숙 mRNA로 가공되는 과정을 조절한다.</div>
+ <div class="body">
+  <div class="col" style="flex:1.05">
+   <div class="card"><h3><span class="num">01</span>표적 인식</h3><p>스핀라자의 ASO 염기서열은 SMN2 pre-mRNA의 <span class="a">ISS-N1 영역</span>에 상보적으로 결합한다. 이 결합은 스플라이싱 조절 인자의 작용을 방해한다.</p></div>
+   <div class="card"><h3><span class="num">02</span>스플라이싱 변화</h3><p>엑손 7이 최종 mRNA에 포함될 가능성이 커진다. 그 결과 완성형 SMN2 mRNA가 늘어나고, 기능성 SMN 단백질 생성이 증가한다.</p></div>
+   <div class="card"><h3><span class="num">03</span>생물학적 의미</h3><p>SMN 단백질 부족을 완화해 운동신경세포의 기능 유지에 도움을 주는 것이 치료의 목표다. 효과와 반응은 개인별로 다를 수 있다.</p></div>
+  </div>
+  <div class="visual" style="flex:.95;justify-content:flex-start">
+   <div class="caption" style="font-size:20px;color:#dbe7ff">한눈에 보는 작용 기전</div>
+   <div class="step"><strong>SMN2 pre-mRNA</strong><span>ISS-N1 부위가 존재</span></div>
+   <div style="text-align:center;color:var(--violet);font-size:28px">↓</div>
+   <div class="step"><strong>스핀라자(ASO)</strong><span>표적 서열에 상보 결합</span></div>
+   <div style="text-align:center;color:var(--teal);font-size:28px">↓</div>
+   <div class="step"><strong>스플라이싱 교정</strong><span>엑손 7 포함 증가</span></div>
+   <div style="text-align:center;color:var(--amber);font-size:28px">↓</div>
+   <div class="step" style="border-color:#0f766e"><strong style="color:var(--amber)">SMN 단백질</strong><span>기능성 단백질 생성 증가</span></div>
+   <div class="eq">ASO 결합 → 엑손 7 유지 ↑ → SMN 단백질 ↑</div>
+   <div class="caption">참고: 본 자료는 제공된 내용의 개념을 요약한 교육용 자료이며, 임상 용량·투여 일정 안내용이 아님.</div>
+  </div>
+ </div>
+</section>
+<div class="foot">← → 방향키 또는 아래 버튼으로 이동 · 교육용 개념 시뮬레이션</div><div class="nav"><button id="prev">◀</button><span id="pg">1 / 3</span><button id="next">▶</button></div>
+</div>
+<script>
+const stage=document.getElementById('stage');function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`translate(-50%,-50%) scale(${s})`}addEventListener('resize',fit);fit();
+const slides=[...document.querySelectorAll('.slide')];let cur=0;function go(i){cur=Math.max(0,Math.min(slides.length-1,i));slides.forEach((s,k)=>s.classList.toggle('active',k===cur));document.getElementById('pg').textContent=`${cur+1} / ${slides.length}`}document.getElementById('prev').onclick=()=>go(cur-1);document.getElementById('next').onclick=()=>go(cur+1);addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')go(cur+1);if(e.key==='ArrowLeft'||e.key==='PageUp')go(cur-1)});
+const c=document.getElementById('sim'),ctx=c.getContext('2d');let treated=false,anim=0,particles=[];function resetSim(){treated=false;anim=0;particles=[];document.getElementById('simStatus').textContent='현재 상태: 투여 전 — 엑손 7이 제외된 mRNA가 만들어질 수 있음';document.getElementById('bindV').textContent='대기';document.getElementById('exonV').textContent='낮은 비율';document.getElementById('proteinV').textContent='제한적';document.getElementById('bindBar').style.width='0%';document.getElementById('exonBar').style.width='22%';document.getElementById('proteinBar').style.width='20%'}document.getElementById('reset').onclick=resetSim;document.getElementById('treat').onclick=()=>{treated=true;anim=0;document.getElementById('simStatus').textContent='작용 중 — ASO가 ISS-N1 부위에 결합하는 과정을 표시';document.getElementById('bindV').textContent='결합 중';};
+function rounded(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function draw(){ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#93a3bd';ctx.font='bold 20px Pretendard';ctx.textAlign='center';ctx.fillText('SMN2 pre-mRNA의 스플라이싱 과정',560,38);
+// RNA backbone
+ctx.strokeStyle='#47617f';ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(100,190);ctx.lineTo(1020,190);ctx.stroke();
+const exons=[{x:130,w:150,label:'엑손 6',col:'#2563eb'},{x:410,w:170,label:'엑손 7',col:treated?'#0f766e':'#475569'},{x:700,w:160,label:'엑손 8',col:'#2563eb'}];exons.forEach(e=>{rounded(e.x,145,e.w,90,16,e.col,treated&&e.label==='엑손 7'?'#2dd4bf':'#47617f');ctx.fillStyle='#fff';ctx.font='bold 23px Pretendard';ctx.fillText(e.label,e.x+e.w/2,199)});
+ctx.fillStyle='#93a3bd';ctx.font='18px Pretendard';ctx.fillText('ISS-N1',495,270);ctx.strokeStyle=treated?'#a78bfa':'#f43f5e';ctx.lineWidth=3;ctx.setLineDash([7,7]);ctx.beginPath();ctx.moveTo(430,250);ctx.lineTo(570,250);ctx.stroke();ctx.setLineDash([]);
+if(treated){ctx.fillStyle='rgba(167,139,250,.15)';ctx.beginPath();ctx.ellipse(500,270,110,52,0,0,Math.PI*2);ctx.fill();rounded(410,300,180,58,14,'#5b21b6','#a78bfa');ctx.fillStyle='#fff';ctx.font='bold 21px Pretendard';ctx.fillText('스핀라자 ASO',500,336);ctx.strokeStyle='#a78bfa';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(500,300);ctx.lineTo(500,250);ctx.stroke();ctx.fillStyle='#c4b5fd';ctx.font='18px Pretendard';ctx.fillText('ISS-N1에 상보 결합',500,390)}else{rounded(390,300,220,58,'#451a2a','#f43f5e');ctx.fillStyle='#fecdd3';ctx.font='bold 20px Pretendard';ctx.fillText('스플라이싱 억제 인자',500,336);ctx.strokeStyle='#f43f5e';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(500,300);ctx.lineTo(500,250);ctx.stroke();ctx.fillStyle='#fda4af';ctx.font='18px Pretendard';ctx.fillText('엑손 7 제외 가능성 ↑',500,390)}
+// outcome panel
+rounded(130,435,860,92,'#101b30',treated?'#0f766e':'#22304d');ctx.fillStyle=treated?'#5eead4':'#cbd5e1';ctx.font='bold 24px Pretendard';ctx.fillText(treated?'결과: 엑손 7이 포함된 mRNA 증가':'결과: 엑손 7이 제외된 mRNA가 생성될 수 있음',560,474);ctx.fillStyle='#93a3bd';ctx.font='18px Pretendard';ctx.fillText(treated?'완성형 mRNA 증가 → 기능성 SMN 단백질 생성 증가에 도움':'엑손 7 제외 → 기능성 SMN 단백질 생성 제한',560,505);
+if(treated&&anim<100)anim+=1.5;if(treated&&anim>55){document.getElementById('bindV').textContent='결합 완료';document.getElementById('bindBar').style.width='100%';document.getElementById('exonV').textContent='증가';document.getElementById('exonBar').style.width='82%';document.getElementById('proteinV').textContent='생성 증가';document.getElementById('proteinBar').style.width='76%';document.getElementById('simStatus').textContent='개념 결과 — 엑손 7 포함과 기능성 SMN 단백질 생성 증가에 도움'}requestAnimationFrame(draw)}resetSim();draw();
+</script></body></html>
